@@ -1,0 +1,55 @@
+# The following types define the data model of the example service
+# based on which the GraphQL API is generated
+
+type User @model {
+  id: ID! @isUnique
+  name: String
+  dateOfBirth: DateTime
+
+  # Uncomment below - you can declare relations between models like this
+
+  # posts: [Post!]! @relation(name: "UserPosts")
+}
+
+type IngredientType @model {
+  id: ID! @isUnique
+  type: String! @isUnique
+  ingredients: Ingredient @relation(name: "IngredientType")
+}
+
+type Ingredient @model {
+  averageAbv: Float
+  id: ID! @isUnique
+  name: String! @isUnique
+  type: IngredientType! @relation(name: "IngredientType")
+  ingredientFor: [CocktailIngredient!]! @relation(name: "IngredientFor")
+}
+
+type CocktailIngredient @model {
+  id: ID! @isUnique
+  ingredient: Ingredient! @relation(name: "IngredientFor")
+  quantity: Float!
+  cocktail: Cocktail! @relation(name: "CocktailIngredient")
+}
+
+type Cocktail @model {
+  id: ID! @isUnique
+  name: String! @isUnique
+  ingredients: [CocktailIngredient!]! @relation(name: "CocktailIngredient")
+  favourited: Boolean
+  missingNumber: Int
+  photo: String!
+  rating: Float
+  description: String
+}
+
+
+# Uncomment the model below as well
+
+# type Post @model {
+#   id: ID! @isUnique
+#   title: String!
+#
+#   # Every relation also required a back-relation (to determine 1:1, 1:n or n:m)
+#   author: User! @relation(name: "UserPosts")
+# }
